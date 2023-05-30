@@ -24,6 +24,9 @@
         <button id="newChat" class="btn relative btn-neutral border-0 md:border" as="button"><div class="flex w-full gap-2 items-center justify-center"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-3 w-3" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>New chat</div></button>
       </div>
     </div>
+    <br>
+    <br>
+    <div id="divHistory"></div>
 
     <script
       src="http://code.jquery.com/jquery-3.3.1.min.js"
@@ -35,6 +38,8 @@
     const socket = io()
 
     socket.emit('enviar_html')
+
+    socket.emit('get_history_html')
 
     socket.emit('message', 'hello')
 
@@ -64,6 +69,14 @@
       // Para ir al final del chat
       // var ultimoElemento = $('#divTest').children().last();
       // ultimoElemento[0].scrollIntoView();
+      
+    })
+
+
+    socket.on('send_history_html', function(codigo_html) {
+      $("#divHistory").empty();
+      $('#divHistory').append(codigo_html);
+    
       
     })
 
@@ -101,6 +114,9 @@
     });
 
 
+    function getChatHistory(idChat){
+      socket.emit('getChatHistory',idChat);
+    }
 
 
   </script>

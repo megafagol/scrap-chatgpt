@@ -1,7 +1,9 @@
-__pycache__
+__pycache__/
 env/
+script_aux/
 
 archivo.html
 archivo1.html
 cookies.json
 INFO.txt
+chatHistory.json

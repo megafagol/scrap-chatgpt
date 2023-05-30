@@ -249,6 +249,18 @@ def handleMessage(prompt):
     # getHTMLChat()
     # send(msg, broadcast = True)
 
+
+@socketio.on('getChatHistory')
+def getChatHistory(idChat):
+    # print('Desde evento getChatHistory')
+    # print(idChat)
+    driver.get('https://chat.openai.com/c/'+idChat)
+    # sendPrompt(prompt)
+    time.sleep(2)
+    enviar_html()
+
+
+
 @socketio.on('enviar_html')
 def enviar_html():
     codigo_html = '<h1>Ejemplo de código HTML enviado desde el servidor</h1>'
@@ -258,6 +270,33 @@ def enviar_html():
         arch_codigo_html = file.read()
 
     socketio.emit('html_recibido', getHTMLChat())
+
+
+@socketio.on('get_history_html')
+def get_history_html():
+    
+    # Ruta al archivo JSON
+    archivo = 'chatHistory.json'
+
+    # Leer el archivo JSON
+    with open(archivo, 'r', encoding='utf-8') as f:
+        # Cargar el contenido del archivo como un objeto JSON
+        data = json.load(f)
+
+    items = data['items']
+
+    htmlHistory = ""
+
+    for item in items:
+        
+        # print(item['title'])
+
+        htmlHistory = htmlHistory + "<button id=\""+item['id']+"\" onclick=\"getChatHistory(\'"+item['id']+"\')\" class=\"btn relative btn-neutral border-0 md:border\" as=\"button\"><div class=\"flex w-full gap-2 items-center justify-center\">"+item['title']+"</div></button><br>"+'\n'
+
+        # archivo1.write("<button id='getChatHistory("+item['id']+")' class='btn relative btn-neutral border-0 md:border' as='button'><div class='flex w-full gap-2 items-center justify-center'>"+item['title']+"</div></button><br>"+'\n')
+
+    socketio.emit('send_history_html', htmlHistory)
+
 
 
 @socketio.on('newChatPost')
