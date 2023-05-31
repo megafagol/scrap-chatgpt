@@ -135,17 +135,23 @@ def stopGenerating():
 
 
 def sendPrompt(prompt):
-    element = driver.find_element(By.XPATH, "//textarea[@class='m-0 w-full resize-none border-0 bg-transparent p-0 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent pl-2 md:pl-0']")
-    element.send_keys(Keys.TAB);
+    element = driver.find_element(By.XPATH, "//textarea[@class='m-0 w-full resize-none border-0 bg-transparent p-0 pr-10 focus:ring-0 focus-visible:ring-0 dark:bg-transparent md:pr-12 pl-3 md:pl-0']")
+    # element.send_keys(Keys.TAB);
     element.clear();
 
     # promptAux = prompt.replace("\n", "")
     # element.send_keys(promptAux);
 
-    driver.execute_script("arguments[0].value = arguments[1];", element, prompt)
+    driver.execute_script("arguments[0].value = arguments[1];", element, prompt);
+    element.send_keys(".");
+    element.send_keys(chr(127));
 
     time.sleep(1)
-    element.send_keys(Keys.ENTER);
+    # element.send_keys(Keys.ENTER);
+    #VER PORQUE SE ROMPE ACA PERO FUNCIONA IGUALMENTE
+    sendButton = driver.find_element(By.XPATH, "//button[@class='absolute p-1 rounded-md bottom-[10px] md:bottom-3 md:p-2 md:right-3 dark:hover:bg-gray-900 dark:disabled:hover:bg-transparent right-2 disabled:text-gray-400 enabled:bg-brand-purple text-white transition-colors disabled:opacity-40']")
+    
+    sendButton.click()
 
     enviar_html()
 
